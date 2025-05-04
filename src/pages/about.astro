@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import Header from '../components/Header.astro';
+import Header from '../components/Header.tsx';
 import Footer from '../components/Footer.astro';
 
 const pageTitle = "About Me";
@@ -41,7 +41,7 @@ const textCase = "uppercase";
     </style>
 	</head>
 	<body>
-    <Header />
+    <Header client:load/>
     <h1>{pageTitle}</h1>
     <h2>... And About My New Astro Site!!!!!</h2>
   
