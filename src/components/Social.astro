@@ -1,5 +1,4 @@
 ---
-import type { SocialLink } from "../types/social-link";
 const { SocialLink: { platform, linkUrl } } = Astro.props;
 ---
 <a href={linkUrl}>{platform}</a>

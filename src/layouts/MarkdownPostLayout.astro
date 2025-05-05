@@ -1,0 +1,31 @@
+---
+interface Props {
+  frontmatter: {
+    title: string;
+    pubDate: Date;
+    description: string;
+    author: string;
+    image: {
+      url: string;
+      alt: string;
+    };
+    tags: string[];
+  };
+}
+
+const { frontmatter } = Astro.props as Props;
+---
+<head>
+  <meta charset="utf-8" />
+</head>
+<h1>{frontmatter.title}</h1>
+<p>投稿日: {frontmatter.pubDate.toString().slice(0,10)}</p>
+<p><em>{frontmatter.description}</em></p>
+<p>著者: {frontmatter.author}</p>
+<img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
+<ul>
+  {frontmatter.tags.map(tag => (
+    <li>{tag}</li>
+  ))}
+</ul>
+<slot />
