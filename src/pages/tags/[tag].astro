@@ -24,7 +24,7 @@ export async function getStaticPaths(): Promise<Array<{ params: Params, props: P
 const { tag } = Astro.params as Params;
 const { posts } = Astro.props as Props;
 ---
-<BaseLayout pageTitle={tag}>
+<BaseLayout pageTitle=`#${tag}`>
   <p>{tag}のタグが付いた記事</p>
   <ul>
     {posts.map((post) => <BlogPost url={post.url} title={post.frontmatter.title}/>)}
