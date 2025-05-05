@@ -1,12 +1,17 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogPost from '../../components/BlogPost.astro';
+interface Params {
+  tag: string
+}
 interface Props {
   posts: Array<any>;
 }
-export async function getStaticPaths(): Promise<Array<{ params: { tag: string }, props: Props }>> {
+export async function getStaticPaths(): Promise<Array<{ params: Params, props: Props }>> {
   const allPosts = await Astro.glob('../posts/*.md');
+  // 全てのmdからタグを抽出
   const uniqueTags = [...new Set(allPosts.map((post) => post.frontmatter.tags).flat())];
+  // 全てのタグに対し、そのタグが含まれた記事を抽出し、paramおよびpropとする
   return uniqueTags.map((tag) => {
     const filteredPosts = allPosts.filter((post) => post.frontmatter.tags.includes(tag));
     return {
@@ -16,7 +21,7 @@ export async function getStaticPaths(): Promise<Array<{ params: { tag: string },
   });
 }
 
-const { tag } = Astro.params;
+const { tag } = Astro.params as Params;
 const { posts } = Astro.props as Props;
 ---
 <BaseLayout pageTitle={tag}>
