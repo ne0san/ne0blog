@@ -1,5 +1,9 @@
 ---
-const { SocialLink: { platform, linkUrl } } = Astro.props;
+import type { SocialLink } from "../types/social-link";
+interface Props {
+  SocialLink: SocialLink
+}
+const { SocialLink: { platform, linkUrl } } = Astro.props as Props;
 ---
 <a href={linkUrl}>{platform}</a>
 <style>
