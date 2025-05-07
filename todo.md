@@ -1,7 +1,7 @@
 # todo
 
 - [x] React.FCを消す
-- [ ] astroをprettierでフォーマットさせる
+- [x] astroをprettierでフォーマットさせる
 - [ ] ThemeIconをtsxに置き換え
 - [ ] pr出してみる
 - [ ] スタイル何とかする
