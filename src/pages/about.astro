@@ -2,23 +2,23 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import '../styles/global.css';
 
-const pageTitle = "About Me";
+const pageTitle = 'About Me';
 const identity = {
-  NickName: "ねおさん",
-  city: "都内",
-  occupation: "エンジニア",
-  hobbies: ["読書", "テニス", "ダーツ"],
+  NickName: 'ねおさん',
+  city: '都内',
+  occupation: 'エンジニア',
+  hobbies: ['読書', 'テニス', 'ダーツ'],
 };
-const skills = ["TypeScript(Biggner)", "Rust(Only AtCoder)", "Elixir(Biggner)", "Python", "Vue"];
+const skills = ['TypeScript(Biggner)', 'Rust(Only AtCoder)', 'Elixir(Biggner)', 'Python', 'Vue'];
 const happy = true;
 const finished = true;
 const goal = 1;
 
-const skillColor = "navy";
-const fontWeight = "bold";
-const textCase = "uppercase";
-
+const skillColor = 'navy';
+const fontWeight = 'bold';
+const textCase = 'uppercase';
 ---
+
 <BaseLayout pageTitle={pageTitle}>
   <h2>... And About My New Astro Site!!!!!</h2>
 
@@ -30,9 +30,7 @@ const textCase = "uppercase";
   <ul>
     <li>{identity.NickName}と名乗っています。</li>
     <li>{identity.city}に生息しており、{identity.occupation}として働いています。</li>
-    {identity.hobbies.length >= 2 &&
-      <li>私の趣味は{identity.hobbies.join("、")}です。</li>
-    }
+    {identity.hobbies.length >= 2 && <li>私の趣味は{identity.hobbies.join('、')}です。</li>}
   </ul>
   <p>私のスキルは以下の通りです。</p>
   <ul>
@@ -43,10 +41,16 @@ const textCase = "uppercase";
 
   {finished && <p>I finished this tutorial! このチュートリアルを終えました！</p>}
 
-  {goal === 1 ? <p>My goal is to finish in 1 days. 1日で終えるのが目標です。</p> : <p>My goal is not 1 days. 1日が目標ではありません。</p>}
+  {
+    goal === 1 ? (
+      <p>My goal is to finish in 1 days. 1日で終えるのが目標です。</p>
+    ) : (
+      <p>My goal is not 1 days. 1日が目標ではありません。</p>
+    )
+  }
 
   <!-- define:varsで変数を渡せる -->
-  <style define:vars={{skillColor, fontWeight, textCase}}>
+  <style define:vars={{ skillColor, fontWeight, textCase }}>
     h1 {
       color: purple;
       font-size: 4rem;

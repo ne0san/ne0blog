@@ -1,17 +1,18 @@
 ---
-import Social from "./Social.astro";
-import type { SocialLink } from "../types/social-link";
-const platform = "Github";
-const username = "ne0san";
+import Social from './Social.astro';
+import type { SocialLink } from '../types/social-link';
+const platform = 'Github';
+const username = 'ne0san';
 // bluesky、discord、zenn、qiita、読書メーター
 const links: SocialLink[] = [
-  { platform: "bluesky", linkUrl: `https://bsky.app/profile/ne0san.bsky.social` },
-  { platform: "discord", linkUrl: `https://discord.com/users/ne0l1gh7` },
-  { platform: "zenn", linkUrl: `https://zenn.dev/ne0` },
-  { platform: "qiita", linkUrl: `https://qiita.com/ne0san` },
-  { platform: "読書メーター", linkUrl: `https://bookmeter.com/users/1073811` },
-]
+  { platform: 'bluesky', linkUrl: `https://bsky.app/profile/ne0san.bsky.social` },
+  { platform: 'discord', linkUrl: `https://discord.com/users/ne0l1gh7` },
+  { platform: 'zenn', linkUrl: `https://zenn.dev/ne0` },
+  { platform: 'qiita', linkUrl: `https://qiita.com/ne0san` },
+  { platform: '読書メーター', linkUrl: `https://bookmeter.com/users/1073811` },
+];
 ---
+
 <style>
   footer {
     /* display: flex; */
@@ -20,9 +21,19 @@ const links: SocialLink[] = [
   }
 </style>
 <footer>
-  <p>私のプロジェクトについて詳しくは<a href={`https://www.${platform}.com/${username}`}>{platform}</a>をご確認ください！</p>
+  <p>
+    私のプロジェクトについて詳しくは<a href={`https://www.${platform}.com/${username}`}
+      >{platform}</a
+    >をご確認ください！
+  </p>
   <p>その他のリンクについては以下の通りです。</p>
   <ul>
-    {links.map((link) => <li><Social SocialLink={link} /></li>)}
+    {
+      links.map((link) => (
+        <li>
+          <Social SocialLink={link} />
+        </li>
+      ))
+    }
   </ul>
 </footer>

@@ -16,17 +16,26 @@ interface Props {
 
 const { frontmatter } = Astro.props as Props;
 ---
+
 <BaseLayout pageTitle={frontmatter.title}>
-  <p>投稿日: {frontmatter.pubDate.toString().slice(0,10)}</p>
+  <p>投稿日: {frontmatter.pubDate.toString().slice(0, 10)}</p>
   <p><em>{frontmatter.description}</em></p>
   <p>著者: {frontmatter.author}</p>
   <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
-  <div class="tags">{frontmatter.tags.map((tag) => <p class="tags"><a href={`/tags/${tag}`}>{`#${tag}`}</a></p>)}</div>
+  <div class="tags">
+    {
+      frontmatter.tags.map((tag) => (
+        <p class="tags">
+          <a href={`/tags/${tag}`}>{`#${tag}`}</a>
+        </p>
+      ))
+    }
+  </div>
   <slot />
 </BaseLayout>
 <style>
   a {
-    color: #00539F;
+    color: #00539f;
   }
 
   .tags {
@@ -37,9 +46,9 @@ const { frontmatter } = Astro.props as Props;
   .tag {
     margin: 0.25em;
     border: dotted 1px #a1a1a1;
-    border-radius: .5em;
-    padding: .5em 1em;
+    border-radius: 0.5em;
+    padding: 0.5em 1em;
     font-size: 1.15em;
-    background-color: #F8FCFD;
+    background-color: #f8fcfd;
   }
 </style>

@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Greeting from '../components/Greeting.tsx';
-const pageTitle = "俺のAstroサイト！！！！！！！です！！";
+const pageTitle = '俺のAstroサイト！！！！！！！です！！';
 ---
+
 <BaseLayout pageTitle={pageTitle}>
   <h2>俺の素ん晴らっしいブログのサブタイトルでございます</h2>
-  <Greeting client:load messages={["どうも", "こんにちは", "初めまして", "ようこそ"]} />
+  <Greeting client:load messages={['どうも', 'こんにちは', '初めまして', 'ようこそ']} />
   <!-- ↑ハイドレーションされたコンポーネント -->
 </BaseLayout>

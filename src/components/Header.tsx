@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import Hamburger from "./Hamburger.tsx";
-import Navigation from "./Navigation.tsx";
+import { useState } from 'react';
+import Hamburger from './Hamburger.tsx';
+import Navigation from './Navigation.tsx';
 
 const Header = () => {
   const [isNavExpanded, setIsNavExpanded] = useState(false);
   const toggleNavigationExpanded = () => {
     setIsNavExpanded(!isNavExpanded);
-  }
+  };
 
   return (
     <header>
@@ -16,6 +16,6 @@ const Header = () => {
         <Navigation isNavExpanded={isNavExpanded} />
       </nav>
     </header>
-  )
-}
-export default Header
+  );
+};
+export default Header;

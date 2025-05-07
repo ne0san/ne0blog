@@ -13,7 +13,7 @@ const Hamburger = ({ onClickHamburger }: Props) => {
       <span className="line"></span>
     </div>
   );
-}
+};
 export default Hamburger;
 // headerに状態を持たせる
 // headerはhamburgerとNavigationを内包している
