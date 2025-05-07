@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 interface Props {
   messages: string[]
 }
-const Greeting: React.FC<Props> = ({ messages }) => {
+const Greeting = ({ messages }: Props) => {
   
   const randomMessage = () => messages[(Math.floor(Math.random() * messages.length))];
 

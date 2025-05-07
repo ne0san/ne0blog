@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Hamburger from "./Hamburger.tsx";
 import Navigation from "./Navigation.tsx";
 
-const Header: React.FC = () => {
+const Header = () => {
   const [isNavExpanded, setIsNavExpanded] = useState(false);
   const toggleNavigationExpanded = () => {
     setIsNavExpanded(!isNavExpanded);

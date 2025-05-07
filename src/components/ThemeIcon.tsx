@@ -1,7 +1,6 @@
-import React from "react";
 import styles from "./ThemeIcon.module.css"
 
-const ThemeIcon:React.FC = () =>{
+const ThemeIcon = () =>{
   return (
     <button id="themeToggle">
       <svg width="30px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

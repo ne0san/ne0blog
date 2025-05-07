@@ -1,10 +1,8 @@
-import React from "react";
-
 interface Props {
   onClickHamburger: () => void;
 }
 
-const Hamburger:React.FC<Props> = ({ onClickHamburger }) => {
+const Hamburger = ({ onClickHamburger }: Props) => {
   const handleHamburgerClick = () => {
     onClickHamburger();
   };

@@ -1,10 +1,8 @@
-import React from "react";
-
 interface Props {
   isNavExpanded: boolean;
 }
 
-const Navigation: React.FC<Props> = ({ isNavExpanded }) => {
+const Navigation = ({ isNavExpanded }: Props) => {
   return (
     <div className={`nav-links ${isNavExpanded ? "expanded" : ""}`}>
       <a href="/">ホーム</a>
