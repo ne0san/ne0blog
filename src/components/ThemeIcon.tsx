@@ -7,41 +7,40 @@ const ThemeIcon = () => {
 
   // コンポーネントマウント時にテーマを初期化
   useEffect(() => {
-    // ローカルストレージのテーマか、無ければブラウザ設定からテーマを取得
-    const initialTheme = (() => {
-      const storedTheme = localStorage.getItem('theme');
-      if (typeof localStorage !== 'undefined' && storedTheme) {
-        return storedTheme as 'light' | 'dark';
-      }
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        return 'dark';
-      }
-      return 'light';
-    })();
-
-    setTheme(initialTheme);
-
-    // htmlタグのdarkクラス有無を設定
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-
-    // ローカルストレージにテーマを保存
-    window.localStorage.setItem('theme', initialTheme);
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme === 'light' || storedTheme === 'dark') {
+      setTheme(storedTheme);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setTheme('dark');
+    } else {
+      setTheme('light');
+    }
   }, []);
+
+  // テーマ状態変更時、DOMのクラスを更新
+  useEffect(() => {
+    // DOMのクラスを更新
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    // localStorage に保存
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   // テーマ切り替え処理
   const handleToggleClick = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-
-    // htmlタグのdarkクラスを切り替え
-    document.documentElement.classList.toggle('dark');
-
-    // ローカルストレージにテーマを保存
-    localStorage.setItem('theme', newTheme);
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 
   return (
-    <button className={styles.themeToggle} onClick={handleToggleClick}>
+    <button
+      className={styles.themeToggle}
+      onClick={handleToggleClick}
+      aria-label="テーマを切り替える"
+    >
       <svg width="30px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path
           className={styles.sun}

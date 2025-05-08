@@ -2,7 +2,8 @@
 
 - [x] React.FCを消す
 - [x] astroをprettierでフォーマットさせる
-- [ ] ThemeIconをtsxに置き換え
+- [x] ThemeIconをtsxに置き換え
+- [ ] ページ一覧動的生成
 - [ ] pr出してみる
 - [ ] スタイル何とかする
 - [ ] ドメインをつけて公開する
