@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Hamburger from './Hamburger.tsx';
 import Navigation from './Navigation.tsx';
+import ThemeIcon from './ThemeIcon.tsx';
 
 const Header = () => {
   const [isNavExpanded, setIsNavExpanded] = useState(false);
@@ -14,6 +15,7 @@ const Header = () => {
       <nav>
         <Hamburger onClickHamburger={toggleNavigationExpanded} />
         <Navigation isNavExpanded={isNavExpanded} />
+        <ThemeIcon />
       </nav>
     </header>
   );
