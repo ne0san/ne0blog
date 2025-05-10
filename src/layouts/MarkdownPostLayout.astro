@@ -1,6 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-interface Props {
+type Props = {
   frontmatter: {
     title: string;
     pubDate: Date;
@@ -12,7 +12,7 @@ interface Props {
     };
     tags: string[];
   };
-}
+};
 
 const { frontmatter } = Astro.props as Props;
 ---

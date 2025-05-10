@@ -1,6 +1,6 @@
-interface Props {
+type Props = {
   isNavExpanded: boolean;
-}
+};
 
 const Navigation = ({ isNavExpanded }: Props) => {
   return (

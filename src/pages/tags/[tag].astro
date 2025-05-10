@@ -1,12 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogPost from '../../components/BlogPost.astro';
-interface Params {
+type Params = {
   tag: string;
-}
-interface Props {
+};
+type Props = {
   posts: Array<any>;
-}
+};
 export async function getStaticPaths(): Promise<Array<{ params: Params; props: Props }>> {
   const allPosts = await Astro.glob('../posts/*.md');
   // 全てのmdからタグを抽出

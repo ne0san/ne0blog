@@ -1,6 +1,6 @@
-interface Props {
+type Props = {
   onClickHamburger: () => void;
-}
+};
 
 const Hamburger = ({ onClickHamburger }: Props) => {
   const handleHamburgerClick = () => {

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-interface Props {
+type Props = {
   messages: string[];
-}
+};
 const Greeting = ({ messages }: Props) => {
   const randomMessage = () => messages[Math.floor(Math.random() * messages.length)];
 

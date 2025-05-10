@@ -1,8 +1,8 @@
 ---
 import type { SocialLink } from '../types/social-link';
-interface Props {
+type Props = {
   SocialLink: SocialLink;
-}
+};
 const {
   SocialLink: { platform, linkUrl },
 } = Astro.props as Props;
