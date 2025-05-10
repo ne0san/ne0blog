@@ -23,3 +23,25 @@ const { pageTitle } = Astro.props as Props;
     <Footer />
   </body>
 </html>
+<script is:inline>
+  // ローカルストレージのテーマか、無ければブラウザ設定からテーマを取得
+  const theme = (() => {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      return localStorage.getItem('theme');
+    }
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+    return 'light';
+  })();
+
+  // htmlタグのdarkクラス有無を設定
+  if (theme === 'light') {
+    document.documentElement.classList.remove('dark');
+  } else {
+    document.documentElement.classList.add('dark');
+  }
+
+  // ローカルストレージにテーマを保存
+  window.localStorage.setItem('theme', theme);
+</script>
