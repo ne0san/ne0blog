@@ -11,9 +11,9 @@ const Header = () => {
 
   return (
     <header>
-      <h1>ねおろぐ</h1>
-      <nav>
+      <nav className="flex items-center gap-4">
         <Hamburger onClickHamburger={toggleNavigationExpanded} />
+        <h1>ねおろぐ</h1>
         <Navigation isNavExpanded={isNavExpanded} />
         <ThemeIcon />
       </nav>
