@@ -1,93 +1,61 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
-html {
-  background-color: #f1f5f9;
-  font-family: sans-serif;
-}
+@plugin "@tailwindcss/typography";
 
-html.dark {
-  background-color: #0d0950;
-  color: #fff;
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
-body {
-  margin: 0 auto;
-  width: 100%;
-  max-width: 80ch;
-  padding: 1rem;
-  line-height: 1.5;
-}
+/* Tailwind doesn't fully support some of the complex CSS selectors needed for code highlighting,
+so we need to keep some custom CSS but applied through Tailwind's plugin system
+These styles are for code highlighting that can't be easily implemented with just Tailwind */
+@layer utilities {
+    .content pre {
+        @apply p-0;
+    }
 
-* {
-  box-sizing: border-box;
-}
+    .content code {
+        @apply overflow-x-auto;
+    }
 
-h1 {
-  margin: 1rem 0;
-  font-size: 2.5rem;
-}
+    .content [data-rehype-pretty-code-figure] code {
+        @apply p-0;
+    }
 
-/* ナビゲーションのスタイル */
-.hamburger {
-  padding-right: 20px;
-  cursor: pointer;
-}
+    .content pre > code span[data-line] {
+        @apply border-l-8 border-transparent px-2;
+    }
 
-.hamburger .line {
-  display: block;
-  width: 40px;
-  height: 5px;
-  margin-bottom: 10px;
-  background-color: #ff9776;
-}
+    .content pre > code span:first-of-type {
+        @apply rounded-t-lg pt-2;
+    }
 
-.nav-links {
-  width: 100%;
-  top: 5rem;
-  left: 48px;
-  background-color: #ff9776;
-  display: none;
-  margin: 0;
-}
+    .content pre > code span:last-of-type {
+        @apply rounded-b-lg pb-2;
+    }
 
-.dark .nav-links a {
-  color: #fff;
-}
+    .content pre > code .highlighted {
+        @apply border-l-8 !border-gray-300/60 bg-gray-200/5;
+    }
 
-.nav-links a {
-  display: block;
-  text-align: center;
-  padding: 10px 0;
-  text-decoration: none;
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-transform: uppercase;
-}
+    .content pre > code[data-line-numbers] {
+        counter-reset: line;
+    }
 
-.nav-links a:hover,
-.nav-links a:focus {
-  background-color: #ff9776;
-}
+    .content pre > code[data-line-numbers] > span[data-line]::before {
+        counter-increment: line;
+        content: counter(line);
+        @apply mr-8 inline-block w-4 text-left text-[#7ca2dfad];
+    }
 
-.expanded {
-  display: unset;
-}
+    .content pre > code > span[data-line]::before {
+        content: '';
+        @apply inline-block w-4 text-right;
+    }
 
-@media screen and (min-width: 636px) {
-  .nav-links {
-    margin-left: 5em;
-    display: block;
-    position: static;
-    width: auto;
-    background: none;
-  }
+    .content pre > code[data-line-numbers-max-digits='2'] > span[data-line]::before {
+        @apply w-8;
+    }
 
-  .nav-links a {
-    display: inline-block;
-    padding: 15px 20px;
-  }
-
-  .hamburger {
-    display: none;
-  }
+    .content code[data-line-numbers-max-digits='3'] > span[data-line]::before {
+        @apply w-12;
+    }
 }

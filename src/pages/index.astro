@@ -1,11 +1,22 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Greeting from '../components/Greeting.tsx';
-const pageTitle = '俺のAstroサイト！！！！！！！です！！';
+import { AppConfig } from '@/utils/AppConfig';
+import Base from '@/layouts/Base.astro';
+import Hero from '@/components/Hero.astro';
+import LatestPosts from '@/components/LatestPosts.astro';
+import { sortPostsByDate } from '@/utils/data.util';
+import { MarkdownInstance } from 'astro';
+
+const { title } = AppConfig;
+const { description } = AppConfig;
+
+const allPosts = Object.values(
+	import.meta.glob('./posts/*.md', { eager: true })
+) as MarkdownInstance<any>[];
+allPosts.sort(sortPostsByDate);
+const latestPosts = allPosts.slice(0, 3);
 ---
 
-<BaseLayout pageTitle={pageTitle}>
-  <h2>俺の素ん晴らっしいブログのサブタイトルでございます</h2>
-  <Greeting client:load messages={['どうも', 'こんにちは', '初めまして', 'ようこそ']} />
-  <!-- ↑ハイドレーションされたコンポーネント -->
-</BaseLayout>
+<Base head={{ title, description }}>
+	<Hero />
+	<LatestPosts posts={latestPosts} />
+</Base>
