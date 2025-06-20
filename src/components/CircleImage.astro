@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets';
+
+export interface Props {
+	src: string;
+	alt: string;
+	size?: 'sm' | 'md' | 'lg';
+	className?: string;
+}
+
+const { src, alt, size = 'md', className = '' } = Astro.props;
+
+const sizeClasses = {
+	sm: 'h-16 w-16',
+	md: 'h-24 w-24',
+	lg: 'h-32 w-32'
+};
+
+const sizePixels = {
+	sm: 64,
+	md: 96,
+	lg: 128
+};
+---
+
+<Image
+	src={src}
+	alt={alt}
+	width={sizePixels[size]}
+	height={sizePixels[size]}
+	class={`rounded-full object-cover shadow-lg ${sizeClasses[size]} ${className}`}
+/>
