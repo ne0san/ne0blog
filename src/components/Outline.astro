@@ -1,0 +1,250 @@
+---
+/**
+ * アウトラインコンポーネント
+ * ブログ記事の右端に目次を表示し、スムーススクロールとアクティブセクションのハイライト機能を提供
+ */
+import type { OutlineProps } from '@/types/outline';
+
+export interface Props extends OutlineProps {}
+
+const { items, className = '' } = Astro.props as OutlineProps;
+---
+
+<!-- アウトラインコンテナ：固定幅でレスポンシブ対応 -->
+<div class={`outline-container ${className}`}>
+	<!-- スティッキー配置で画面上部に固定、スクロール可能な領域 -->
+	<div class="sticky top-8 max-h-screen overflow-y-auto">
+		<!-- 目次のタイトル -->
+		<h3 class="mb-4 text-lg font-semibold text-gray-800 dark:text-gray-200">目次</h3>
+		
+		<!-- ナビゲーション領域：左側にボーダーライン -->
+		<nav class="outline-nav">
+			<!-- 動的に生成されるアウトライン項目のリスト -->
+			<ul class="space-y-1">
+				{
+					items.map((item) => (
+						// 各アウトライン項目：レベルに応じたクラス設定
+						<li class={`outline-item outline-level-${item.level}`} data-level={item.level}>
+							<!-- クリック可能なリンク：レベルに応じてインデントとスタイル調整 -->
+							<a
+								href={`#${item.id}`}
+								class={`block rounded px-2 py-1 text-sm transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 ${item.level === 1 ? 'font-semibold text-gray-900 dark:text-gray-100' : ''} ${item.level === 2 ? 'ml-2 text-gray-700 dark:text-gray-300' : ''} ${item.level === 3 ? 'ml-4 text-gray-600 dark:text-gray-400' : ''} ${item.level >= 4 ? 'ml-6 text-gray-500 dark:text-gray-500' : ''} ${item.isActive ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' : ''} `}
+								data-outline-link
+								data-target={item.id}
+							>
+								{item.text}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+	</div>
+</div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		// PostContentのヘッダーIDが付与されるまで少し待つ
+		setTimeout(() => {
+			initializeOutline();
+		}, 100);
+	});
+
+	// アウトラインを生成
+	function initializeOutline() {
+		// 動的にアウトライン項目を生成
+		// post-contentを取得
+		const content = document.getElementById('post-content');
+		if (content) {
+			// contentからh1~6を取得
+			const headings = content.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]');
+			const outlineNav = document.querySelector('.outline-nav ul');
+
+			if (outlineNav && headings.length > 0) {
+				// 既存のアウトラインをクリア
+				outlineNav.innerHTML = '';
+
+				// 動的にアウトライン項目を生成
+				headings.forEach((heading) => {
+					const level = parseInt(heading.tagName.substring(1));
+					const id = heading.getAttribute('id');
+					const text = heading.textContent?.trim() || '';
+
+					if (id && text) {
+						const li = document.createElement('li');
+						li.className = `outline-item outline-level-${level}`;
+						li.setAttribute('data-level', level.toString());
+
+						const a = document.createElement('a');
+						a.href = `#${id}`;
+						a.setAttribute('data-outline-link', '');
+						a.setAttribute('data-target', id);
+						a.textContent = text;
+
+						// レベルに応じたスタイリング
+						let classes =
+							'block py-1 px-2 text-sm transition-colors duration-200 rounded hover:bg-gray-100 dark:hover:bg-gray-700';
+						if (level === 1) classes += ' font-semibold text-gray-900 dark:text-gray-100';
+						else if (level === 2) classes += ' ml-2 text-gray-700 dark:text-gray-300';
+						else if (level === 3) classes += ' ml-4 text-gray-600 dark:text-gray-400';
+						else if (level >= 4) classes += ' ml-6 text-gray-500 dark:text-gray-500';
+
+						a.className = classes;
+						li.appendChild(a);
+						outlineNav.appendChild(li);
+					}
+				});
+			}
+		}
+
+		// スムーススクロール機能
+		const outlineLinks = document.querySelectorAll('[data-outline-link]');
+
+		outlineLinks.forEach((link) => {
+			link.addEventListener('click', (e) => {
+				e.preventDefault();
+				const targetId = link.getAttribute('data-target');
+				if (targetId) {
+					const targetElement = document.getElementById(targetId);
+
+					if (targetElement) {
+						targetElement.scrollIntoView({
+							behavior: 'smooth',
+							block: 'start'
+						});
+					}
+				}
+			});
+		});
+
+		// アクティブセクションのハイライト
+		const observerOptions = {
+			rootMargin: '-80px 0px -60% 0px', // 上部80px、下部60%マージン
+			threshold: 0.1
+		};
+
+		let activeHeadings: Set<string> = new Set();
+
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				const id = entry.target.getAttribute('id');
+				if(id){
+					if (entry.isIntersecting) {
+						activeHeadings.add(id);
+					} else {
+						activeHeadings.delete(id);
+					}
+				}}
+			);
+			
+
+			// 画面上部に最も近いヘッダーを見つける
+			const headings = document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]');
+			let topMostHeading = null;
+			let minDistance = Infinity;
+
+			headings.forEach((heading) => {
+				const rect = heading.getBoundingClientRect();
+				const distance = Math.abs(rect.top - 80); // ナビゲーションバーの高さを考慮
+
+				if (rect.top <= 120 && distance < minDistance) {
+					// 画面上部120px以内
+					minDistance = distance;
+					topMostHeading = heading.getAttribute('id');
+				}
+			});
+
+			// activeHeadingsが空でない場合は、その中で最上部のものを選択
+			if (activeHeadings.size > 0 && !topMostHeading) {
+				const visibleHeadings = Array.from(activeHeadings);
+				const headingElements = visibleHeadings
+					.map((id) => document.getElementById(id))
+					.filter((el): el is HTMLElement => Boolean(el));
+
+				if (headingElements.length > 0) {
+					topMostHeading = headingElements
+						.reduce((topmost, current) => {
+							return current.getBoundingClientRect().top < topmost.getBoundingClientRect().top
+								? current
+								: topmost;
+						})
+						.getAttribute('id');
+				}
+			}
+
+			// すべてのリンクからアクティブクラスを削除
+			outlineLinks.forEach((l) => {
+				l.classList.remove(
+					'bg-blue-100',
+					'text-blue-700',
+					'dark:bg-blue-900',
+					'dark:text-blue-300'
+				);
+			});
+
+			// 最上部のヘッダーに対応するリンクをアクティブに
+			if (topMostHeading) {
+				const activeLink = document.querySelector(`[data-target="${topMostHeading}"]`);
+				if (activeLink) {
+					activeLink.classList.add(
+						'bg-blue-100',
+						'text-blue-700',
+						'dark:bg-blue-900',
+						'dark:text-blue-300'
+					);
+				}
+			}
+		}, observerOptions);
+
+		// h1-h6要素を監視対象に追加
+		const headings = document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]');
+		headings.forEach((heading) => observer.observe(heading));
+	}
+</script>
+
+<style>
+	.outline-container {
+		width: 16rem;
+		flex-shrink: 0;
+	}
+
+	.outline-nav {
+		border-left: 2px solid #e5e7eb;
+		padding-left: 1rem;
+	}
+
+	:global(.dark) .outline-nav {
+		border-left-color: #374151;
+	}
+
+	.outline-item {
+		position: relative;
+	}
+
+	.outline-level-1 {
+		border-left: 2px solid transparent;
+	}
+
+	.outline-level-2 {
+		border-left: 1px solid #d1d5db;
+	}
+
+	:global(.dark) .outline-level-2 {
+		border-left-color: #4b5563;
+	}
+
+	.outline-level-3 {
+		border-left: 1px solid #e5e7eb;
+	}
+
+	:global(.dark) .outline-level-3 {
+		border-left-color: #374151;
+	}
+
+	/* レスポンシブ対応 */
+	@media (max-width: 1280px) {
+		.outline-container {
+			display: none;
+		}
+	}
+</style>

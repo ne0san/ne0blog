@@ -1,12 +1,15 @@
+import rss, {pagesGlobToRssItems} from '@astrojs/rss';
 import type { APIRoute } from 'astro';
-import rss, { pagesGlobToRssItems } from '@astrojs/rss';
 
 export const GET: APIRoute = async (context) => {
   return rss({
-    title: 'Astro学習者 | ブログ',
-    description: 'Astroを学ぶ旅',
+    title: 'ねおぶろぐ',
+    description: 'テックも雑談もごちゃ混ぜのブログ',
     site: context.site!,
-    items: await pagesGlobToRssItems(import.meta.glob('./**/*.md')),
+    items: await pagesGlobToRssItems(
+      import.meta.glob('./posts/*.{md,mdx}'),
+    ),
+    stylesheet: './rss/styles.xsl',
     customData: `<language>ja-jp</language>`,
   });
-};
+}

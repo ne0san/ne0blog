@@ -1,33 +1,65 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import BlogPost from '../../components/BlogPost.astro';
-type Params = {
-  tag: string;
-};
-type Props = {
-  posts: Array<any>;
-};
-export async function getStaticPaths(): Promise<Array<{ params: Params; props: Props }>> {
-  const allPosts = await Astro.glob('../posts/*.md');
-  // 全てのmdからタグを抽出
-  const uniqueTags = [...new Set(allPosts.map((post) => post.frontmatter.tags).flat())];
-  // 全てのタグに対し、そのタグが含まれた記事を抽出し、paramおよびpropとする
-  return uniqueTags.map((tag) => {
-    const filteredPosts = allPosts.filter((post) => post.frontmatter.tags.includes(tag));
-    return {
-      params: { tag },
-      props: { posts: filteredPosts },
-    };
-  });
+import Section from '@/components/Section.astro';
+import Card from '@/components/Card.astro';
+import Base from '@/layouts/Base.astro';
+import Heading from '@/components/Heading.astro';
+import { AppConfig } from '@/utils/AppConfig';
+import { MarkdownInstance } from 'astro';
+import { sortPostsByDate } from '@/utils/data.util';
+
+export async function getStaticPaths(): Promise<any> {
+	const allPosts = Object.values(
+		import.meta.glob('../posts/*.md', { eager: true })
+	) as MarkdownInstance<any>[];
+
+	const allTags: Set<string> = new Set(
+		allPosts.map((post: MarkdownInstance<Record<string, any>>) => post.frontmatter.tags).flat()
+	);
+
+	return [...allTags].map((tag) => {
+		const filteredPosts = allPosts.filter((post: MarkdownInstance<Record<string, any>>) =>
+			post.frontmatter.tags.includes(tag)
+		);
+
+		// Sort posts by pinned status and date
+		filteredPosts.sort(sortPostsByDate);
+
+		return {
+			params: { tag: tag },
+			props: {
+				posts: filteredPosts
+			}
+		};
+	});
 }
 
-const { tag } = Astro.params as Params;
-const { posts } = Astro.props as Props;
+interface Props {
+	posts: MarkdownInstance<Record<string, any>>[];
+}
+
+const { tag } = Astro.params;
+const title = AppConfig.title;
+const description = AppConfig.description;
+
+const { posts } = Astro.props;
 ---
 
-<BaseLayout pageTitle=`#${tag}`>
-  <p>{tag}のタグが付いた記事</p>
-  <ul>
-    {posts.map((post) => <BlogPost url={post.url} title={post.frontmatter.title} />)}
-  </ul>
-</BaseLayout>
+<Base head={{ title, description }}>
+	<Section>
+		<Heading title={`Posts with #${tag}`} />
+		<div class="pt-2 text-center">
+			<a href="/tags" class="underline hover:text-orange-600">all tags →</a>
+		</div>
+	</Section>
+	<Section>
+		{
+			posts
+				.filter((post: any) => post.frontmatter.tags?.includes(tag))
+				.map((post: any) => (
+					<div class="mb-4 basis-1 last:mb-0">
+						<Card post={post} />
+					</div>
+				))
+		}
+	</Section>
+</Base>

@@ -1,0 +1,44 @@
+---
+import { AppConfig } from '@/utils/AppConfig';
+import Base from '@/layouts/Base.astro';
+import PostHeader from '@/components/PostHeader.astro';
+import PostContent from '@/components/PostContent.astro';
+import Outline from '@/components/Outline.astro';
+
+const { description } = AppConfig;
+
+const { frontmatter } = Astro.props;
+
+// ダミーのアウトライン項目（実際には投稿内容から動的に生成される）
+const outlineItems = [
+	{ id: 'introduction', text: 'はじめに', level: 2, isActive: false },
+	{ id: 'overview', text: '概要', level: 2, isActive: false },
+	{ id: 'details', text: '詳細', level: 2, isActive: false },
+	{ id: 'implementation', text: '実装', level: 3, isActive: false },
+	{ id: 'testing', text: 'テスト', level: 3, isActive: false },
+	{ id: 'conclusion', text: 'まとめ', level: 2, isActive: false }
+];
+---
+
+<Base head={{ title: frontmatter.title, description }}>
+	<div class="mx-auto w-full max-w-screen-xl">
+		<div class="flex gap-8">
+			<!-- メインコンテンツ -->
+			<div class="w-full max-w-screen-md">
+				<PostHeader
+					title={frontmatter.title}
+					author={frontmatter.author}
+					tags={frontmatter.tags}
+					minutesRead={frontmatter.minutesRead}
+					pubDate={frontmatter.pubDate}
+					isPinned={frontmatter.isPinned}
+					img={{ src: frontmatter.image.src, alt: frontmatter.image.alt }}
+				/>
+				<PostContent><slot /></PostContent>
+			</div>
+			
+			<!-- アウトライン -->
+			<Outline items={outlineItems} className="hidden xl:block" />
+		</div>
+	</div>
+</Base>
