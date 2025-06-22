@@ -1,11 +1,12 @@
 ---
 import Section from './Section.astro';
+import { AppConfig } from '@/utils/AppConfig';
 ---
 
 <Section>
 	<div class="flex items-center justify-between">
 		<div class="text-3xl font-bold">
-			<a href="/"> ねおさん's ろぐ </a>
+			<a href="/"> {AppConfig.title} </a>
 		</div>
 		<div class="flex items-center">
 			<!-- Desktop Navigation -->

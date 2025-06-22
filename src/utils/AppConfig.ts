@@ -1,7 +1,6 @@
 export const AppConfig = {
-	site_name: "ねおさん's ろぐ",
-	title: "ねおさん's ろぐ | 雑多なブログ",
-	description: '雑多にアウトプットするエンジニアのブログ',
+	title: "ねおさん's ろぐ",
+	description: '雑多にアウトプットするエンジニアの個人ブログ',
 	author: 'ne0san',
 	locale_region: 'ja-JP',
 	locale: 'ja'
